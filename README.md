@@ -5,17 +5,29 @@
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compiles UI and hot-reloads for development
 ```
-npm run serve
+editor src/config.js
+npm run ui-dev
 ```
 
-### Compiles and minifies for production
+### Compiles UI and minifies for production
 ```
-npm run build
+editor src/config.js
+npm run ui-build
 ```
 
 ### Lints and fixes files
+```
+npm run lint
+```
+
+### Serve explorer api on specific port
+```
+npm run lint
+```
+
+### Run block sync manager to 
 ```
 npm run lint
 ```
