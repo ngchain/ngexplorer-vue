@@ -24,12 +24,12 @@ npm run lint
 
 ### Serve explorer api on specific port
 ```
-npm run lint
+npm run backend-serve
 ```
 
 ### Run block sync manager to 
 ```
-npm run lint
+npm run backend-sync
 ```
 
 ### Customize configuration
