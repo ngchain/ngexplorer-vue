@@ -2,16 +2,7 @@ const axios = require('axios').default
 const Redis = require('ioredis')
 const redis = new Redis() // uses defaults unless given configuration object
 
-main(init, loop)
-
-async function main (init, blockLoop) {
-  await init()
-  await updateStats()
-  setInterval(await updateStats, 1000)
-  setInterval(await blockLoop, 1000)
-}
-
-async function init () {
+async function init() {
   const res = await axios.post(
     'http://127.0.0.1:52521',
     JSON.stringify({ id: 0, method: 'getLatestBlock' })
@@ -26,7 +17,7 @@ async function init () {
   await sync(block)
 }
 
-async function updateStats () {
+async function updateStats() {
   const stats = {}
   {
     const res = await axios.post(
@@ -65,16 +56,16 @@ async function updateStats () {
       prevBlock.difficulty / (block.timestamp - prevBlock.timestamp)
   }
 
+  const now = (Date.now() / 1000) | 0
   console.log('new stats', stats)
-  await redis.hset(
-    'ng:explorer:stats',
-    (Date.now() / 1000) | 0,
-    JSON.stringify(stats)
-  )
+
+  await redis.set('ng:explorer:stats:' + now, JSON.stringify(stats))
+  await redis.expire('ng:explorer:stats:' + now, 60 * 60 * 24) // expire in one day
+
   await redis.hset('ng:explorer:latest', 'stats', JSON.stringify(stats))
 }
 
-async function sync (entranceBlock) {
+async function sync(entranceBlock) {
   if (entranceBlock.prevBlockHash === '') {
     return
   }
@@ -96,14 +87,7 @@ async function sync (entranceBlock) {
         })
       )
     } catch (err) {
-      console.log(
-        err,
-        JSON.stringify({
-          id: 0,
-          method: 'getBlockByHash',
-          params: { hash: entranceBlock.prevBlockHash }
-        })
-      )
+      console.log(err)
     }
 
     const block = await res.data.result
@@ -112,7 +96,7 @@ async function sync (entranceBlock) {
   }
 }
 
-async function loop () {
+async function blockLoop() {
   const res = await axios.post(
     'http://127.0.0.1:52521',
     JSON.stringify({ id: 0, method: 'getLatestBlock' })
@@ -129,26 +113,33 @@ async function loop () {
   }
 }
 
-async function saveBlock (jsonBlock, latest = false) {
+async function saveBlock(block, latest = false) {
   const ppl = redis.pipeline()
 
   if (latest) {
-    ppl.hset('ng:explorer:latest', 'height', jsonBlock.height)
-    ppl.hset('ng:explorer:latest', 'hash', jsonBlock.hash)
+    ppl.hset('ng:explorer:latest', 'height', block.height)
+    ppl.hset('ng:explorer:latest', 'hash', block.hash)
   }
 
-  jsonBlock.txs.forEach(tx => {
+  const txs = block.txs
+  block.txs = []
+  txs.forEach(tx => {
     ppl.hset('ng:explorer:tx:hash', tx.hash, JSON.stringify(tx))
-    ppl.hset('ng:explorer:account:' + tx.convener, tx.hash, JSON.stringify(tx))
-    ppl.hset('ng:explorer:tx:block', tx.hash, jsonBlock.hash)
+    ppl.zadd('ng:explorer:account:tx', tx.convener, tx.hash)
+    ppl.hset('ng:explorer:tx:block', tx.hash, block.hash)
+    block.txs.push(tx.hash)
   })
 
-  ppl.hset(
-    'ng:explorer:block:height',
-    jsonBlock.height,
-    JSON.stringify(jsonBlock)
-  )
-  ppl.hset('ng:explorer:block:hash', jsonBlock.hash, JSON.stringify(jsonBlock))
+  ppl.hset('ng:explorer:block:height', block.height, block.hash)
+  ppl.hset('ng:explorer:block:hash', block.hash, JSON.stringify(block))
 
-  ppl.exec((_err) => {})
+  ppl.exec(_err => {})
+}
+
+main()
+async function main() {
+  await init()
+  await updateStats()
+  setInterval(updateStats, 1000)
+  setInterval(blockLoop, 1000)
 }
