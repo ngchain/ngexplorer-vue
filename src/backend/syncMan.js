@@ -7,8 +7,6 @@ async function init() {
     'http://127.0.0.1:52521',
     JSON.stringify({ id: 0, method: 'getLatestBlock' })
   )
-  // handle success
-  console.log(res)
 
   const block = await res.data.result
   await saveBlock(block, true)
@@ -56,11 +54,11 @@ async function updateStats() {
       prevBlock.difficulty / (block.timestamp - prevBlock.timestamp)
   }
 
-  const now = (Date.now() / 1000) | 0
-  console.log('new stats', stats)
+  // const now = (Date.now() / 1000) | 0
+  console.log('stats updated')
 
-  await redis.set('ng:explorer:stats:' + now, JSON.stringify(stats))
-  await redis.expire('ng:explorer:stats:' + now, 60 * 60 * 24) // expire in one day
+  // await redis.set('ng:explorer:stats:' + now, JSON.stringify(stats))
+  // await redis.expire('ng:explorer:stats:' + now, 60 * 60 * 24) // expire in one day
 
   await redis.hset('ng:explorer:latest', 'stats', JSON.stringify(stats))
 }
@@ -74,7 +72,7 @@ async function sync(entranceBlock) {
     'ng:explorer:block:hash',
     entranceBlock.prevBlockHash
   )
-  console.log(entranceBlock.prevBlockHash)
+  console.log('inputed ' + entranceBlock.prevBlockHash)
   if (result == null || result.length === 0) {
     let res
     try {
@@ -87,7 +85,7 @@ async function sync(entranceBlock) {
         })
       )
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
 
     const block = await res.data.result
@@ -105,7 +103,7 @@ async function blockLoop() {
   const block = await res.data.result
   await saveBlock(block, true)
 
-  console.log('updated latest block', block.hash)
+  console.log('updated latest block' + block.hash)
 
   const result = await redis.hget('ng:explorer:block:hash', block.prevBlockHash)
   if (result == null || result.length === 0) {

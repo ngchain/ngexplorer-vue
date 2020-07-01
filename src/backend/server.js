@@ -19,7 +19,8 @@ app.get('/blocks', async (req, res) => {
   const blocks = []
   const latestHeight = await redis.hget('ng:explorer:latest', 'height')
   for (let h = latestHeight; h > latestHeight - 50; h--) {
-    const jsonBlock = await redis.hget('ng:explorer:block:height', h)
+    const blockHash = await redis.hget('ng:explorer:block:height', h)
+    const jsonBlock = await redis.hget('ng:explorer:block:hash', blockHash)
     blocks.push(JSON.parse(jsonBlock))
   }
 
@@ -34,15 +35,11 @@ app.get('/block/:hashOrHeight', async (req, res) => {
     return
   }
 
-  let block
   try {
-    block = getBlockByHashOrHeight(hashOrHeight)
+    res.send(JSON.stringify(await getBlockByHashOrHeight(hashOrHeight)))
   } catch (e) {
-    res.sendStatus(400)
-    return
+    res.sendStatus(404)
   }
-
-  res.send(block)
 })
 
 app.get('/tx/:txHash/block', async (req, res) => {
@@ -63,20 +60,21 @@ app.get('/tx/:txHash/block', async (req, res) => {
 })
 
 async function getBlockByHashOrHeight(hashOrHeight) {
-  let block
+  let jsonBlock
   if (hashOrHeight.length === 64) {
-    block = await redis.hget('ng:explorer:block:hash', hashOrHeight)
+    jsonBlock = await redis.hget('ng:explorer:block:hash', hashOrHeight)
   } else {
     const blockHash = await redis.hget('ng:explorer:block:height', hashOrHeight)
-    block = await redis.hget('ng:explorer:block:hash', blockHash)
+    jsonBlock = await redis.hget('ng:explorer:block:hash', blockHash)
   }
 
-  const txHashes = block.txs
-  block.txs = []
-  txHashes.forEach(txHash => {
-    const tx = getTxByHash(txHash)
-    block.txs.push(tx)
-  })
+  const block = JSON.parse(jsonBlock)
+  await Promise.all(
+    block.txs.map(async (txHash, i) => {
+      const tx = await getTxByHash(txHash)
+      block.txs[i] = tx
+    })
+  )
 
   return block
 }
