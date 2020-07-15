@@ -6,7 +6,10 @@
           <v-item>
             <v-container>
               <v-card>
-                <v-card-title>{{ n.name }}</v-card-title>
+                <v-card-title>
+                  <v-icon large left color="primary" > {{ n.icon }} </v-icon>
+                  <span class="title font-weight-light">{{ n.name }}</span>
+                </v-card-title>
                 <v-card-text class="headline font-weight-bold">{{n.value}}</v-card-text>
               </v-card>
             </v-container>
@@ -27,26 +30,32 @@ export default {
     return {
       items: {
         network: {
+          icon: 'mdi-wan',
           name: 'Network',
           value: 'Unknown'
         },
         hashrate: {
+          icon: 'mdi-speedometer',
           name: 'Hashrate',
           value: '0 h/s'
         },
         difficulty: {
+          icon: 'mdi-message-alert',
           name: 'Difficulty',
           value: 0
         },
         peers: {
+          icon: 'mdi-account-group',
           name: 'Peers',
           value: 0
         },
         price: {
+          icon: 'mdi-cash',
           name: 'Price',
           value: '∞'
         },
         height: {
+          icon: 'mdi-image-filter-hdr',
           name: 'Height',
           value: 0
         }
