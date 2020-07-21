@@ -1,20 +1,19 @@
 <template>
-  <div class="tx">
+  <div class="account">
     <v-container>
-      <Tx />
+      <Account />
     </v-container>
   </div>
 </template>
 
 <script>
-import Tx from '../components/tx/Tx'
+import Account from '../components/account/Account'
 
 // @ is an alias to /src
 export default {
   name: 'Home',
   components: {
-    // TableList,
-    Tx
+    Account
   }
 }
 </script>

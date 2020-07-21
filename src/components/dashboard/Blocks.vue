@@ -7,11 +7,11 @@
             <template v-slot:item="{item}">
               <tr>
                 <td>
-                  <v-chip color="primary"  :to="{ path: '/block/'+item.height}">{{ item.height }}</v-chip>
+                  <v-chip color="primary" :to="{ path: '/block/'+item.height}">{{ item.height }}</v-chip>
                 </td>
                 <td>{{ timestampReadable(item.timestamp) }}</td>
                 <td>
-                  <v-chip label  :to="{ path: '/block/'+item.hash}"> {{ item.hash }}</v-chip>
+                  <v-chip label :to="{ path: '/block/'+item.hash}"> {{ item.hash }}</v-chip>
                 </td>
                 <td class="text-xs-right">{{ item.txn }}</td>
               </tr>

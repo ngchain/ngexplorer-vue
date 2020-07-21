@@ -42,7 +42,7 @@ export default {
   methods: {
     search: function (e) {
       if (e.keyCode === 13) {
-        this.router.push('/blocks/' + this.searchText)
+        this.router.push('/item/' + this.searchText)
       }
     }
   }

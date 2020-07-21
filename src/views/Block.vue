@@ -13,7 +13,6 @@ import Block from '../components/block/Block'
 export default {
   name: 'Home',
   components: {
-    // TableList,
     Block
   }
 }

@@ -1,6 +1,6 @@
 // edit me before build
-const addr = 'http://127.0.0.1'
-const port = 3000
+const addr = 'http://la.ngin.cash'
+const port = 443
 
 module.exports = {
   addr: addr,

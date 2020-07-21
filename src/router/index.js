@@ -25,15 +25,17 @@ const routes = [
   {
     path: '/tx/:txHash',
     name: 'Tx',
-    component: () => import(/* webpackChunkName: "block" */ '../views/Block.vue')
+    component: () => import(/* webpackChunkName: "block" */ '../views/Tx.vue')
   },
   {
     path: '/account/:num',
-    name: 'account'
+    name: 'account',
+    component: () => import(/* webpackChunkName: "block" */ '../views/Account.vue')
   },
   {
     path: '/address/:addr',
-    name: 'Address'
+    name: 'Address',
+    component: () => import(/* webpackChunkName: "block" */ '../views/Address.vue')
   }
 
 ]
