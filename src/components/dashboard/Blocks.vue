@@ -29,6 +29,7 @@ import Config from '@/config'
 
 export default {
   data: () => ({
+    timer: null,
     headers: [
       {
         sortable: false,
@@ -53,17 +54,23 @@ export default {
     ],
     items: []
   }),
+  async created () {
+    this.timer = setInterval(this.update, 10000)
+  },
   async mounted () {
-    const res = await this.axios.get(Config.backendAddr + '/blocks')
-    this.items = res.data
-    // await Promise.all(
-    //   this.items.map(async item => {
-    //     item.timestamp = timestampReadable(item.timestamp)
-    //   })
-    // )
+    this.update()
   },
   methods: {
-    timestampReadable: timestampReadable
+    timestampReadable: timestampReadable,
+    async update() {
+      const res = await this.axios.get(Config.backendAddr + '/blocks')
+      this.items = res.data
+      // await Promise.all(
+      //   this.items.map(async item => {
+      //     item.timestamp = timestampReadable(item.timestamp)
+      //   })
+      // )
+    }
   }
 }
 </script>

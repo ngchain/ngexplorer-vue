@@ -59,16 +59,25 @@ export default {
           name: 'Height',
           value: 0
         }
-      }
+      },
+      timer: null
     }
   },
+  methods: {
+    async update() {
+      const res = await this.axios.get(Config.backendAddr + '/dashboard')
+      this.items.network.value = res.data.network
+      this.items.hashrate.value = formatHashrates(res.data.hashrate)
+      this.items.difficulty.value = res.data.difficulty
+      this.items.peers.value = res.data.peers.length
+      this.items.height.value = res.data.height
+    }
+  },
+  async created () {
+    this.timer = setInterval(this.update, 10000)
+  },
   async mounted () {
-    const res = await this.axios.get(Config.backendAddr + '/dashboard')
-    this.items.network.value = res.data.network
-    this.items.hashrate.value = formatHashrates(res.data.hashrate)
-    this.items.difficulty.value = res.data.difficulty
-    this.items.peers.value = res.data.peers.length
-    this.items.height.value = res.data.height
+    this.update()
   }
 }
 </script>
