@@ -41,7 +41,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash', // use 'hash' for github pages, 'history' for VPS
   base: process.env.BASE_URL,
   routes
 })

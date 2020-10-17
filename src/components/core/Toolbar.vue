@@ -3,28 +3,27 @@
     id="core-toolbar"
     app
     dark
-    style="background: #424242;"
+    style="background: #424242"
     flat
-    prominent>
+    prominent
+  >
     <div class="v-toolbar-title">
       <v-toolbar-title class="font-weight-light text-general">
         <v-btn
           v-if="responsive"
           class="default v-btn--simple"
           icon
-          @click.stop="onClickBtn">
+          @click.stop="onClickBtn"
+        >
           <v-icon>mdi-view-list</v-icon>
         </v-btn>
         {{ title }}
       </v-toolbar-title>
     </div>
 
-    <v-spacer/>
+    <v-spacer />
     <v-toolbar-items>
-      <v-flex
-        align-center
-        layout
-        py-2>
+      <v-flex align-center layout py-2>
         <v-text-field
           v-if="responsiveInput"
           class="mr-4 mt-2 purple-input"
@@ -32,10 +31,7 @@
           hide-details
           color="purple"
         />
-        <router-link
-          v-ripple
-          class="toolbar-items"
-          to="/">
+        <router-link v-ripple class="toolbar-items" to="/">
           <v-icon color>mdi-home</v-icon>
         </router-link>
         <v-menu
@@ -43,16 +39,15 @@
           left
           content-class
           offset-y
-          transition="slide-y-transition">
+          transition="slide-y-transition"
+        >
           <router-link
             v-ripple
             slot="activator"
             class="toolbar-items"
             to="/dashboard/notifications"
           >
-            <v-badge
-              color="error"
-              overlap>
+            <v-badge color="error" overlap>
               <template slot="badge">{{ notifications.length }}</template>
               <v-icon color>mdi-bell</v-icon>
             </v-badge>
@@ -62,8 +57,9 @@
               <v-list-tile
                 v-for="notification in notifications"
                 :key="notification"
-                @click="onClick">
-                <v-list-tile-title v-text="notification"/>
+                @click="onClick"
+              >
+                <v-list-tile-title v-text="notification" />
               </v-list-tile>
             </v-list>
           </v-card>
@@ -71,14 +67,12 @@
         <router-link
           v-ripple
           class="toolbar-items"
-          to="/dashboard/user-profile">
+          to="/dashboard/user-profile"
+        >
           <v-icon color>mdi-account</v-icon>
         </router-link>
 
-        <v-icon
-          class="toolbar-items"
-          color
-          @click="logout">mdi-power</v-icon>
+        <v-icon class="toolbar-items" color @click="logout">mdi-power</v-icon>
       </v-flex>
     </v-toolbar-items>
   </v-toolbar>
@@ -106,28 +100,28 @@ export default {
   },
 
   watch: {
-    $route (val) {
+    $route(val) {
       this.title = val.meta.name
     }
   },
 
-  mounted () {
+  mounted() {
     this.onResponsiveInverted()
     window.addEventListener('resize', this.onResponsiveInverted)
   },
-  beforeDestroy () {
+  beforeDestroy() {
     window.removeEventListener('resize', this.onResponsiveInverted)
   },
 
   methods: {
     ...mapMutations('app', ['setDrawer', 'toggleDrawer']),
-    onClickBtn () {
+    onClickBtn() {
       this.setDrawer(!this.$store.state.app.drawer)
     },
-    onClick () {
+    onClick() {
       //
     },
-    onResponsiveInverted () {
+    onResponsiveInverted() {
       if (window.innerWidth < 991) {
         this.responsive = true
         this.responsiveInput = false
@@ -146,7 +140,7 @@ export default {
 </script>
 
 <style>
-	#core-toolbar a {
-		text-decoration: none;
-	}
+#core-toolbar a {
+  text-decoration: none;
+}
 </style>
