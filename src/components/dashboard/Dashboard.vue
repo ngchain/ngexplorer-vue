@@ -22,7 +22,7 @@
 
 <script>
 import Config from '@/config'
-import { formatHashrates } from '@/utils/converter'
+import { formatHashrates, formatDifficulty, formatHeight } from '@/utils/converter'
 
 export default {
   name: 'Dashboard',
@@ -68,9 +68,9 @@ export default {
       const res = await this.axios.get(Config.backendAddr + '/dashboard')
       this.items.network.value = res.data.network
       this.items.hashrate.value = formatHashrates(res.data.hashrate)
-      this.items.difficulty.value = res.data.difficulty
+      this.items.difficulty.value = formatDifficulty(res.data.difficulty)
       this.items.peers.value = res.data.peers.length
-      this.items.height.value = res.data.height
+      this.items.height.value = formatHeight(res.data.height)
     }
   },
   async created () {
