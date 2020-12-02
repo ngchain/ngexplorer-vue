@@ -4,6 +4,7 @@ import './registerServiceWorker'
 import router from '@/router'
 import vuetify from '@/plugins/vuetify'
 import axios from 'axios'
+import '@/styles/global.css'
 
 Vue.prototype.axios = axios
 Vue.prototype.router = router

@@ -5,11 +5,11 @@ exports.formatHashrates = hs => {
     return (hs / 1000).toFixed(2) + 'kh/s'
   } else if (hs < 1000 * 1000 * 1000) {
     return (hs / (1000 * 1000)).toFixed(2) + 'mh/s'
-  } else if  (hs < 1000 * 1000 * 1000 * 1000) {
+  } else if (hs < 1000 * 1000 * 1000 * 1000) {
     return (hs / (1000 * 1000 * 1000)).toFixed(2) + 'gh/s'
   }
 
-  return hs.toLocaleString('en-US', {maximumFractionDigits:2}) + 'gh/s'
+  return hs.toLocaleString('en-US', { maximumFractionDigits: 2 }) + 'gh/s'
 }
 
 exports.formatDifficulty = diff => {

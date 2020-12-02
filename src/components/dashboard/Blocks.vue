@@ -11,7 +11,7 @@
                 </td>
                 <td>{{ timestampReadable(item.timestamp) }}</td>
                 <td>
-                  <v-chip label :to="{ path: '/block/'+item.hash}"> {{ item.hash }}</v-chip>
+                  <v-chip label class="hash" :to="{ path: '/block/'+item.hash}"> {{ item.hash }}</v-chip>
                 </td>
                 <td class="text-xs-right">{{ item.txn }}</td>
               </tr>

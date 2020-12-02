@@ -11,7 +11,7 @@
                 <v-list-item-content>
                   <v-list-item-title>{{ k }}</v-list-item-title>
                   <v-chip-group column v-if="typeof(v) != 'object'" ><v-chip label> {{v}}</v-chip></v-chip-group>
-                  <div v-if="k=='txs'"> <v-chip-group column v-for="(tx) in v" :key="tx"> <v-chip label :to="{ path: '/tx/'+tx }"> {{tx}}</v-chip></v-chip-group></div>
+                  <div v-if="k=='txs'"> <v-chip-group column v-for="(tx) in v" :key="tx"> <v-chip label class="hash" :to="{ path: '/tx/'+tx }"> {{tx}}</v-chip></v-chip-group></div>
                 </v-list-item-content>
               </v-list-item>
             </div>

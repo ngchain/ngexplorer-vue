@@ -18,7 +18,7 @@
                   </v-chip-group>
                   <div v-if="typeof(v) == 'object'">
                     <v-chip-group column v-for="(vv) in v" :key="vv">
-                      <v-chip label v-if="k == 'participants'" :to="{ path: '/address/'+ vv }">{{vv}}</v-chip>
+                      <v-chip label v-if="k == 'participants'" class="hash" :to="{ path: '/address/'+ vv }">{{vv}}</v-chip>
                       <v-chip label v-if="k != 'participants'">{{vv}}</v-chip>
                     </v-chip-group>
                   </div>
