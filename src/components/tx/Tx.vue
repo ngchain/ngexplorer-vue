@@ -78,10 +78,10 @@ export default {
         tx.type = 'AppendTx'
         break
     }
-    tx.fee = tx.fee / 1000000 + ' NG'
+    tx.fee = tx.fee / 1_000_000_000_000_000_000 + ' NG'
     const values = []
     tx.values.forEach(v => {
-      v = v / 1000000 + ' NG'
+      v = v / 1_000_000_000_000_000_000 + ' NG'
       values.push(v)
     })
     tx.values = values

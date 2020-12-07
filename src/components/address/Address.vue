@@ -38,7 +38,7 @@ export default {
     }
 
     this.address = this.$route.params.addr
-    this.balance = res.data / 1000000 + ' NG'
+    this.balance = res.data / 1_000_000_000_000_000_000 + ' NG'
   }
 }
 </script>
