@@ -42,7 +42,33 @@ export default {
   methods: {
     search: function (e) {
       if (e.keyCode === 13) {
-        this.router.push('/item/' + this.searchText)
+        if (this.searchText.length === 64) {
+          this.router.push('/block/' + this.searchText)
+        } if (this.searchText.length === 65) {
+          this.router.push('/block/' + this.searchText.substr(1))
+        } else if (this.searchText.length === 66) {
+          this.router.push('/tx/' + this.searchText.substr(2))
+        } else if (this.searchText.length === 48) {
+          this.router.push('/address/' + this.searchText)
+        } else if (this.searchText === 'help') {
+          this.$root.$confirm('help', 'Gotcha!')
+        } else {
+          if (this.searchText[0] === 'b') {
+            if (isNaN(parseInt(this.searchText.substr(1)))) {
+              this.$root.$confirm('Invalid input', 'You can try searching "help" to get some examples', { color: 'red' })
+            } else {
+              this.router.push('/block/' + this.searchText.substr(1))
+            }
+          } else if (this.searchText[0] === 'a') {
+            if (isNaN(parseInt(this.searchText.substr(1)))) {
+              this.$root.$confirm('Invalid input', 'You can try searching "help" to get some examples', { color: 'red' })
+            } else {
+              this.router.push('/account/' + this.searchText.substr(1))
+            }
+          } else {
+            this.$root.$confirm('Invalid input', 'You can try searching "help" to get some examples', { color: 'red' })
+          }
+        }
       }
     }
   }

@@ -31,6 +31,11 @@ export default {
       block: {}
     }
   },
+  watch: {
+    '$route' (to, from) {
+      this.$router.go(0)
+    }
+  },
   async mounted () {
     let res
     if (this.$route.params.hashOrHeight) {

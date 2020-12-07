@@ -29,6 +29,11 @@ export default {
       balance: 0
     }
   },
+  watch: {
+    '$route' (to, from) {
+      this.$router.go(0)
+    }
+  },
   async mounted () {
     let res
     if (this.$route.params.addr) {

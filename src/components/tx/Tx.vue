@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" lg="8" offset-lg="2">
-        <h4>Tx#{{ tx.hash }}</h4>
+        <h4>Tx{{ tx.hash }}</h4>
         <v-card>
           <v-card-title>Body</v-card-title>
           <v-card-text>
@@ -39,6 +39,11 @@ export default {
   data: () => {
     return {
       tx: {}
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      this.$router.go(0)
     }
   },
   async mounted() {
